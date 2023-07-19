@@ -1,0 +1,32 @@
+
+
+
+
+body {
+    background-color: lightblue;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#calculator-body {
+    background-color: lightgray;
+    border: 5px solid gray;
+    border-radius: 10px;
+
+    padding: 20px;
+    margin-top: 50px;
+}
+
+#display {
+    background-color: white;
+    height: 50px;
+}
+
+.row > button {
+    padding: 15px;
+    border-radius: 8px;
+}
+
