@@ -23,6 +23,11 @@ const btnDivide = document.querySelector("#divide");
 const btnEquals = document.querySelector("#equals"); 
 const btnClear = document.querySelector("#clear");
 
+//display
+const numDisplay = document.querySelector("#display-content")
+
+
+
 
 // button event listeners
 btn0.addEventListener('click', (e) => {numInput(0)});
@@ -45,9 +50,44 @@ btnEquals.addEventListener('click', (e) => {calculate()});
 btnClear.addEventListener('click', (e) => {resetInputs()});
 
 
+
+
+
+/* calculator logic
+
+internal states:
+
+firstVal: accepting numeric input for first value, up to 9 digits
+
+if firstval not empty, pressing any operator moves state to secondVal,
+saving operator into operator variable
+
+secondVal: accepts numeric input up to 9 digits
+
+while in state secondVal and secondVal  not empty, pressing equals computes,
+pressing any other operator computes, places value as result and new firstval,
+and returns computation to secondVal.
+
+states: "firstVal", "secondVal"
+*/
+
+let state = "firstVal";
+let firstVal = "";
+let secondVal = "";
+
+
 //handles number input event
 function numInput(num) {
-    console.log("numinput " + num);
+    console.log("numinput")
+
+    //max input 9 digits, any additional will be ignored
+    if (state === "firstVal" && !displayFull()) {
+        firstVal += num;
+    } else if (state === "secondVal" && !displayFull) {
+        secondVal += num;
+    }
+    console.log(firstVal);
+    updateDisplay();
 }
 
 //handles operation input event
@@ -62,5 +102,29 @@ function calculate() {
 
 //handles clear input event
 function resetInputs() {
-    console.log("reset")
+    console.log("reset");
+    firstVal = "";
+    secondVal = "";
+    updateDisplay(); 
+}
+
+
+
+
+
+
+
+
+
+
+
+// misc helpers
+
+function displayFull()  {
+    return numDisplay.textContent.length >= 9;
+}
+
+function updateDisplay() {
+    if (state === "firstVal") numDisplay.textContent = firstVal;
+    if (state === "secondVal") numDisplay.textContent = secondVal;
 }
