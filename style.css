@@ -6,7 +6,6 @@ body {
 
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
 }
 
@@ -46,4 +45,8 @@ body {
     border-radius: 8px;
 }
 
-
+#footer {
+    margin-top: 300px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 400;
+}

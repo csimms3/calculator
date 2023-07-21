@@ -1,3 +1,10 @@
+//TODOS:
+//  -convert state/state variables to Object
+//  -add -/%/. buttons
+//  -make footer nice
+//  -make footer link clickable
+
+
 
 // basic operator functions
 
