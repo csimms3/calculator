@@ -1,4 +1,43 @@
 
+// basic operator functions
+
+function add(a, b) {
+    return a + b;
+}
+
+function subtract(a, b) {
+    return a - b;
+}
+
+function multiply(a, b) {
+    return a * b;
+}
+
+function divide(a, b) {
+    return a / b;
+}
+
+
+
+// performs given operation on operands
+function operate(operator, a, b) {
+    switch (operator) {
+        case "+":
+            return add(a, b);
+            break;
+        case "-":
+            return subtract(a, b);
+            break;
+        case "*":
+            return multiply(a, b);
+            break;
+        case "/":
+            return divide(a, b);
+            break;
+        default:
+            return "ERROR";
+    }
+}
 
 //get all buttons
 //numeric
@@ -74,6 +113,7 @@ states: "firstVal", "secondVal"
 let state = "firstVal";
 let firstVal = "";
 let secondVal = "";
+let operator = "";
 
 
 //handles number input event
@@ -83,21 +123,43 @@ function numInput(num) {
     //max input 9 digits, any additional will be ignored
     if (state === "firstVal" && !displayFull()) {
         firstVal += num;
-    } else if (state === "secondVal" && !displayFull) {
+    } else if (state === "secondVal" && !displayFull()) {
         secondVal += num;
     }
-    console.log(firstVal);
+    printState();
     updateDisplay();
 }
 
 //handles operation input event
+//if state is firstVal, accepts operator and moves to secondVal
+//if state is secondVal, computes given result, places it into firstVal, then accepts operator
 function operationInput(op) {
     console.log("opInput " + op);
+
+    if (state === "firstVal" && firstVal.length) {
+        state = "secondVal";
+        operator = op;
+    } else if (state === "secondVal" && secondVal.length) {
+        calculate();
+        state = "secondVal";
+        operator = op;
+    }
+
+
+    printState();
 }
 
 //handles equals button event
+//will perform calculation if second val has been inputted
+//if pressed on first val, performs previous calculation again, if secondVal/operator valid
 function calculate() {
     console.log("equals")
+    if ((state === "secondVal" && !secondVal.length)) return;
+
+    firstVal = String(operate(operator, Number(firstVal), Number(secondVal)));
+    state = "firstVal";
+    updateDisplay();
+    printState();
 }
 
 //handles clear input event
@@ -105,6 +167,7 @@ function resetInputs() {
     console.log("reset");
     firstVal = "";
     secondVal = "";
+    operator = "";
     updateDisplay(); 
 }
 
@@ -121,10 +184,18 @@ function resetInputs() {
 // misc helpers
 
 function displayFull()  {
+    console.log(numDisplay.textContent.length)
     return numDisplay.textContent.length >= 9;
 }
 
 function updateDisplay() {
     if (state === "firstVal") numDisplay.textContent = firstVal;
     if (state === "secondVal") numDisplay.textContent = secondVal;
+}
+
+function printState() {
+    console.log("first: " + firstVal)
+    console.log("second: " + secondVal)
+    console.log("op: " + operator)
+    console.log("display len: " + numDisplay.textContent.length)
 }
