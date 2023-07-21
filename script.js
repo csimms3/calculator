@@ -154,7 +154,9 @@ function operationInput(op) {
 //if pressed on first val, performs previous calculation again, if secondVal/operator valid
 function calculate() {
     console.log("equals")
-    if ((state === "secondVal" && !secondVal.length)) return;
+    if ((state === "secondVal" && !secondVal.length)) {
+        secondVal = firstVal;
+    };
 
     firstVal = String(operate(operator, Number(firstVal), Number(secondVal)));
     state = "firstVal";
@@ -165,19 +167,12 @@ function calculate() {
 //handles clear input event
 function resetInputs() {
     console.log("reset");
+    state = "firstVal"
     firstVal = "";
     secondVal = "";
     operator = "";
     updateDisplay(); 
 }
-
-
-
-
-
-
-
-
 
 
 
@@ -194,6 +189,8 @@ function updateDisplay() {
 }
 
 function printState() {
+    console.log("---------------------")
+    console.log(state)
     console.log("first: " + firstVal)
     console.log("second: " + secondVal)
     console.log("op: " + operator)
