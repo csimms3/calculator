@@ -28,22 +28,24 @@ function divide(a, b) {
 
 // performs given operation on operands
 function operate(operator, a, b) {
+    let result = "";
     switch (operator) {
         case "+":
-            return add(a, b);
+            result = add(a, b);
             break;
         case "-":
-            return subtract(a, b);
+            result = subtract(a, b);
             break;
         case "*":
-            return multiply(a, b);
+            result = multiply(a, b);
             break;
         case "/":
-            return divide(a, b);
+            result = divide(a, b);
             break;
         default:
             return "ERROR";
     }
+    return Math.round(result * 1000) / 1000;
 }
 
 //get all buttons
@@ -139,33 +141,25 @@ function numInput(num) {
 
 //handles operation input event
 //if state is firstVal, accepts operator and moves to secondVal
-//if state is secondVal, computes given result, places it into firstVal, then accepts operator
 function operationInput(op) {
     console.log("opInput " + op);
 
     if (state === "firstVal" && firstVal.length) {
         state = "secondVal";
         operator = op;
-    } else if (state === "secondVal" && secondVal.length) {
-        calculate();
-        state = "secondVal";
-        operator = op;
+        updateDisplay();
     }
-
-
     printState();
 }
 
 //handles equals button event
 //will perform calculation if second val has been inputted
-//if pressed on first val, performs previous calculation again, if secondVal/operator valid
 function calculate() {
     console.log("equals")
-    if ((state === "secondVal" && !secondVal.length)) {
-        secondVal = firstVal;
-    };
+    if ((state === "firstVal" || !secondVal.length)) return;
 
     firstVal = String(operate(operator, Number(firstVal), Number(secondVal)));
+    secondVal = "";
     state = "firstVal";
     updateDisplay();
     printState();
