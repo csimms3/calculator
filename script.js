@@ -68,6 +68,9 @@ const btnMultiply = document.querySelector("#multiply");
 const btnDivide = document.querySelector("#divide");
 
 //other
+const btnPercent = document.querySelector("#percent");
+const btnSign = document.querySelector("#sign");
+const btnDecimal = document.querySelector("#decimal");
 const btnEquals = document.querySelector("#equals"); 
 const btnClear = document.querySelector("#clear");
 
@@ -94,11 +97,12 @@ btnSubtract.addEventListener('click', (e) => {operationInput("-")});
 btnMultiply.addEventListener('click', (e) => {operationInput("*")});
 btnDivide.addEventListener('click', (e) => {operationInput("/")});
 
+
+btnPercent.addEventListener('click', (e) => {percentify()});
+btnSign.addEventListener('click', (e) => {flipSign()});
+btnDecimal.addEventListener('click', (e) => {appendDecimal()});
 btnEquals.addEventListener('click', (e) => {calculate()});
 btnClear.addEventListener('click', (e) => {resetInputs()});
-
-
-
 
 
 /* calculator logic
@@ -106,15 +110,11 @@ btnClear.addEventListener('click', (e) => {resetInputs()});
 internal states:
 
 firstVal: accepting numeric input for first value, up to 9 digits
-
-if firstval not empty, pressing any operator moves state to secondVal,
-saving operator into operator variable
+ -if firstval not empty, pressing any operator moves state to secondVal,
+  saving operator into operator variable
 
 secondVal: accepts numeric input up to 9 digits
-
-while in state secondVal and secondVal  not empty, pressing equals computes,
-pressing any other operator computes, places value as result and new firstval,
-and returns computation to secondVal.
+ -while in state secondVal and secondVal  not empty, pressing equals computes
 
 states: "firstVal", "secondVal"
 */
@@ -152,6 +152,28 @@ function operationInput(op) {
     printState();
 }
 
+//divide current value by 100
+function percentify() {
+    if (state === "firstVal") firstVal = String(firstVal / 100);
+    if (state === "secondVal") secondVal = String(secondVal / 100);
+    updateDisplay();
+}
+
+//invert sign of current value
+function flipSign() {
+    if (state === "firstVal") firstVal = String(firstVal * -1);
+    if (state === "secondVal") secondVal = String(secondVal * -1);
+    updateDisplay();
+}
+
+//add decimal point to current value
+function appendDecimal() {
+    if (state === "firstVal" && !firstVal.includes(".")) firstVal = firstVal + ".";
+    if (state === "secondVal" && !secondVal.includes(".")) secondVal = secondVal + ".";
+    updateDisplay();
+}
+
+
 //handles equals button event
 //will perform calculation if second val has been inputted
 function calculate() {
@@ -174,6 +196,8 @@ function resetInputs() {
     operator = "";
     updateDisplay(); 
 }
+
+
 
 
 
